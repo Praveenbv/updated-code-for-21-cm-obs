@@ -1,88 +1,62 @@
-🌌 Hydrogen Line Observation Tool (21cm) with RTL-SDR
-This Streamlit application allows real-time capture, processing, and analysis of 21 cm hydrogen line signals using an RTL-SDR dongle. It computes galactic rotation parameters based on spectral shifts, aiding studies of the Milky Way's dynamics.
+Hydrogen Line Observation Streamlit App
+This repository contains a Python Streamlit application designed to capture and analyze radio telescope data for observing the 21cm hydrogen line and performing galactic rotation calculations.
 
-📡 Features
-🔭 Real-time data acquisition from RTL-SDR
+Features
+Data Acquisition: Captures radio frequency data from RTL-SDR hardware.
 
-📉 FFT-based power spectrum processing and comparison at 1422 MHz and 1420 MHz
+Signal Processing: Averages power spectra for improved signal-to-noise ratio and detection.
 
-🌌 Galactic coordinate and velocity calculation using astropy
+Astrophysical Calculations: Computes galactic velocities and distances using measurements of the 21cm hydrogen line.
 
-📍 Interactive sky-pointing (azimuth & altitude) with live RA/DEC and galactic coordinates
+Data Visualization: Produces detailed plots of power spectra and a summary of calculated parameters.
 
-📈 Visualization of hydrogen line data and spectral differences
+Logging: Saves comprehensive data logs and summaries in CSV format for post-observation analysis.
 
-📁 Automatic CSV logging of detailed trial data and summarized results
+Real-time Coordinates: Provides real-time astronomical coordinate calculations and visualizations based on the antenna's pointing direction.
 
-💾 Plot export with timestamped filenames
-
-🧠 How It Works
-Data Capture: Collects samples from RTL-SDR centered at two frequencies: 1422 MHz (baseline) and 1420.405751 MHz (expected hydrogen line).
-
-Spectral Analysis: Performs FFT, averages spectra, and computes power differences.
-
-Astro Calculations: Uses Doppler shift to calculate:
-
-Radial velocity (Vr)
-
-Total velocity (V)
-
-Distance from Sun (d)
-
-Distance to Galactic Center (R)
-
-Visualization: Displays plots for both channels, difference spectrum, and computed astrophysical parameters.
-
-Logging: Saves detailed and summary trial results in CSV format inside a data/ directory.
-
-📦 Requirements
-Install the following packages (preferably in a virtual environment):
+Installation
+Ensure you have Python installed on your system. You can then install the necessary dependencies using pip:
 
 bash
-Copy
-Edit
 pip install streamlit numpy matplotlib pyrtlsdr astropy
-You will also need:
+Usage
+To launch the application, navigate to the repository's directory in your terminal and run the following command:
 
-A working RTL-SDR USB device
-
-A suitable 21 cm (1420 MHz) antenna (e.g., horn, Yagi, or helical)
-
-🚀 Running the App
 bash
-Copy
-Edit
 streamlit run astrop.py
-🛠️ Sidebar Controls
-Samples per Capture: Number of samples collected per frequency
+After running the command, a web interface will open in your browser. You can configure the observation parameters in the sidebar, including:
 
-FFT Size: Frequency resolution
+Number of samples per capture
 
-Number of Trials: Total repetitions of observation cycle
+Number of observation trials
 
-Antenna Pointing: Altitude and Azimuth control
+FFT size
 
-Auto-refresh Coordinates: Updates RA/DEC and Galactic coordinates continuously
+Antenna altitude and azimuth
 
-📂 Outputs
-All outputs are stored in the data/ folder:
+Once configured, click the "Start Observation Session" button to begin data capture and analysis.
 
-trials_results_<timestamp>.csv – Raw and processed data for each trial
+Detailed Functionality
+Data Capture
+The capture rtldata function interfaces with the connected RTL-SDR device to capture raw I/Q (in-phase and quadrature) samples based on the user-defined parameters.
 
-trials_summary_<timestamp>.csv – Summary of galactic parameters
+Spectral Averaging
+The returnaveragedspectras function takes the raw time-domain data, segments it, and computes an averaged FFT power spectrum. This process is crucial for reducing noise and making the faint hydrogen line signal detectable.
 
-plot_trial_<num>_<timestamp>.png – Spectral plots for each trial
+Galactic Calculations
+The calculatevelocityanddistance function is the core of the scientific analysis. It uses the observed frequency of the hydrogen line and the galactic longitude of the observation to calculate key kinematic parameters, including radial velocities, distances from the Sun, and distances from the Galactic center.
 
-🌍 Location Default
-Observatory Location: Gauribidanur Radio Observatory (Latitude: 13.6029°N, Longitude: 77.4390°E, Elevation: 686m)
+Visualization
+The createplots function generates a multi-panel plot for each observation trial. This plot displays the observed power spectra, the difference spectrum (to isolate the signal), and a text summary of the calculated galactic parameters.
 
-📚 References
-Velocity and distance formulas are based on simplified galactic rotation models from low-cost 21cm observation literature
+Data Output
+All data and plots are automatically saved to a data/ directory. For each observation trial, the application generates:
 
-Uses the IAU 1958 recommended value of the rest frequency for hydrogen: 1420.405751 MH
+A CSV file containing the raw spectral data and all calculated parameters.
 
-🤝 Acknowledgments
-Inspired by open-source efforts in low-cost radio astronomy
+A PNG image of the plot for quick visual analysis.
 
-Built with ❤️ using Streamlit, Astropy, and RTL-SDR
+Notes
+The application is specifically configured to target the 1420 MHz neutral hydrogen line, which is used to study the structure and rotation of our Milky Way galaxy.
 
+The script is pre-configured with the coordinates of the Gauribidanur Radio Observatory in Karnataka, India, for accurate astronomical calculations.
